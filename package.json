@@ -12,6 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "zenn-cli": "^0.1.134"
+    "zenn-cli": "^0.1.137"
   }
 }
