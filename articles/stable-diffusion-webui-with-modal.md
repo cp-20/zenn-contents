@@ -486,6 +486,13 @@ Modalの方が2倍ぐらい早いので使う価値はあるかなという感�
 
 (正直自前のGPUでやる方がカスタマイズ性もやりやすさも段違いなのでそれに越したことはないですボクもGPU欲しい)
 
+> **2023/04/22 追記**
+> ColabでWebUIを使おうとすると警告が出るようになったらしい (下のツイートを参照)
+> なのでWebUIを合法的に使うならModalの方が良いかも (Modalは公式に[SDを動かすサンプル](https://modal.com/docs/guide/ex/stable_diffusion_cli)があるぐらいに推してる)
+> ついでに[LLMs使ったボイスチャット](https://modal.com/docs/guide/llm-voice-chat)とか、[LangChain動かすサンプル](https://modal.com/docs/guide/ex/potus_speech_qanda)とか、[Whisper使ったPodcastの翻訳](https://modal.com/docs/guide/whisper-transcriber)とか[Dreamboothのサンプル](https://modal.com/docs/guide/ex/dreambooth_app)とか、[ControlNet使うサンプル](https://modal.com/docs/guide/ex/controlnet_gradio_demos)とか色々あるみたいなのでAIを使ってみたい人的には結構良いかも (ただし全部英語でかかれてるし、使いこなすにはある程度の能力がいりそう)
+
+https://twitter.com/ddPn08/status/1649264165473878018?s=20
+
 ## 参考にした記事
 
 https://fls.hatenablog.com/entry/2023/01/09/110757
