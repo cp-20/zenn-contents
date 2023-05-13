@@ -233,7 +233,8 @@ async def run_stable_diffusion_webui():
                 model_id["repo_id"],
                 model_id["model_path"],
             )
-            shutil.copy(model_downloaded_dir, webui_model_dir + model_id["model_path"])
+            shutil.copy(model_downloaded_dir, webui_model_dir + os.path.basename(model_id["model_path"]))
+
 
         if "config_file_path" not in model_id:
           continue
@@ -243,9 +244,8 @@ async def run_stable_diffusion_webui():
             config_downloaded_dir = download_hf_file(
                 model_id["repo_id"], model_id["config_file_path"]
             )
-            shutil.copy(
-                config_downloaded_dir, webui_model_dir + model_id["config_file_path"]
-            )
+            shutil.copy(config_downloaded_dir, webui_model_dir + os.path.basename(model_id["config_file_path"]))
+
 
         print(Fore.GREEN + model_id["repo_id"] + "のセットアップが完了しました！")
 
