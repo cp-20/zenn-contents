@@ -80,7 +80,7 @@ def square(x):
     return x**2
 
 # プログラムのローカル側のエントリポイント(プログラムの中で最初に呼び出されるところ)
-@stub.local_entrypoint
+@stub.local_entrypoint()
 def main():
     # Modalの関数は`<function_name>.call`で呼び出す必要がある
     print("the square is", square.call(42))
@@ -258,7 +258,7 @@ async def run_stable_diffusion_webui():
     start()
 
 
-@stub.local_entrypoint
+@stub.local_entrypoint()
 def main():
     run_stable_diffusion_webui.call()
 ```
@@ -445,7 +445,7 @@ def download_image_using_modal(image_path: str):
   os.makedirs(download_dest, exist_ok=True)
   subprocess.run(f'modal volume get {volume_key} {os.path.join(remote_outputs_dir, image_path)} {download_dest}', shell=True)
 
-@stub.local_entrypoint
+@stub.local_entrypoint()
 def main():
   cache = []
 
