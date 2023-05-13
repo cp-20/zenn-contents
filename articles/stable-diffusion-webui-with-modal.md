@@ -30,9 +30,14 @@ published_at: 2023-02-06 20:30
 
 ちなみにPRICINGのところにStable Diffusionを動かすときのお値段の一例が書いてあり、それによれば30ドルで51000枚の画像が生成できるらしいので十分ですね。(実際は画像の生成だけにお金がかかるわけではないのでもう少し減っちゃいますが)
 
+
 > You run stable diffusion on an A10G GPU. This will run for about 1.5 seconds to generate each image, while using 4GB RAM and 1 CPU.
 > 
 > This will cost $0.000458333/image in GPU charges, $0.00008/image in CPU charges, and $0.00004/image in memory charges, adding up to $0.000578333/image in total charges, i.e. $0.587333 per 1,000 images.
+
+
+> **2023/05/13追記**
+> [コメントで教えてもらった](https://zenn.dev/cp20/articles/stable-diffusion-webui-with-modal#comment-1bcefec0d0cb78)んですが、Shared volume storageに$2/GiB/monthかかるらしいです。ただ別に何も起動してなければかかってる感じしないので使っている間だけ消費するのかな...？ (要検証)
 
 ## 使ってみよう！
 
