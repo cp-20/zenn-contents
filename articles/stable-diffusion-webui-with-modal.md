@@ -30,16 +30,14 @@ published_at: 2023-02-06 20:30
 
 ちなみにPRICINGのところにStable Diffusionを動かすときのお値段の一例が書いてあり、それによれば30ドルで51000枚の画像が生成できるらしいので十分ですね。(実際は画像の生成だけにお金がかかるわけではないのでもう少し減っちゃいますが)
 
-
 > You run stable diffusion on an A10G GPU. This will run for about 1.5 seconds to generate each image, while using 4GB RAM and 1 CPU.
-> 
+>
 > This will cost $0.000458333/image in GPU charges, $0.00008/image in CPU charges, and $0.00004/image in memory charges, adding up to $0.000578333/image in total charges, i.e. $0.587333 per 1,000 images.
-
 
 > **2023/05/13追記**
 > [コメントで教えてもらった](https://zenn.dev/cp20/articles/stable-diffusion-webui-with-modal#comment-1bcefec0d0cb78)んですが、Shared volume storageに$2/GiB/monthかかるらしいです。ただ別に何も起動してなければかかってる感じしないので使っている間だけ消費するのかな...？ (要検証)
 
-## 使ってみよう！
+## 使ってみよう
 
 ### 1. ModalのアカウントをGETする
 
@@ -135,8 +133,8 @@ import shlex
 import os
 
 # modal系の変数の定義
-stub = modal.Stub("stable-diffusion-webui")
-volume_main = modal.SharedVolume().persist("stable-diffusion-webui-main")
+stub = modal.Stub("stable-diffusion-webui-2")
+volume_main = modal.NetworkFileSystem.persisted("stable-diffusion-webui-main-2")
 
 # 色んなパスの定義
 webui_dir = "/content/stable-diffusion-webui"
@@ -153,7 +151,7 @@ model_ids = [
 
 
 @stub.function(
-    image=modal.Image.from_dockerhub("python:3.8-slim")
+    image=modal.Image.from_registry("python:3.8-slim")
     .apt_install(
         "git", "libgl1-mesa-dev", "libglib2.0-0", "libsm6", "libxrender1", "libxext6"
     )
@@ -202,10 +200,11 @@ model_ids = [
         "gdown",
         "huggingface_hub",
         "colorama",
+        "torchmetrics==0.11.4",
     )
     .pip_install("git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b"),
     secret=modal.Secret.from_name("my-huggingface-secret"),
-    shared_volumes={webui_dir: volume_main},
+    network_file_systems={webui_dir: volume_main},
     gpu="a10g",
     timeout=6000,
 )
@@ -402,7 +401,7 @@ modal run stable-diffusion-webui.py
 
 WebUIの使い方に関しては他の人が素晴らしい記事をたくさん書いてくれてると思うのでそちらを参考にして頂ければと思います。
 
-https://intindex.stars.ne.jp/archives/12180
+<https://intindex.stars.ne.jp/archives/12180>
 
 ### 5. オマケ: 生成した画像を一括でダウンロードする
 
@@ -496,8 +495,8 @@ Modalの方が2倍ぐらい早いので使う価値はあるかなという感�
 > なのでWebUIを合法的に使うならModalの方が良いかも (Modalは公式に[SDを動かすサンプル](https://modal.com/docs/guide/ex/stable_diffusion_cli)があるぐらいに推してる)
 > ついでに[LLMs使ったボイスチャット](https://modal.com/docs/guide/llm-voice-chat)とか、[LangChain動かすサンプル](https://modal.com/docs/guide/ex/potus_speech_qanda)とか、[Whisper使ったPodcastの翻訳](https://modal.com/docs/guide/whisper-transcriber)とか[Dreamboothのサンプル](https://modal.com/docs/guide/ex/dreambooth_app)とか、[ControlNet使うサンプル](https://modal.com/docs/guide/ex/controlnet_gradio_demos)とか色々あるみたいなのでAIを使ってみたい人的には結構良いかも (ただし全部英語でかかれてるし、使いこなすにはある程度の能力がいりそう)
 
-https://twitter.com/ddPn08/status/1649264165473878018?s=20
+<https://twitter.com/ddPn08/status/1649264165473878018?s=20>
 
 ## 参考にした記事
 
-https://fls.hatenablog.com/entry/2023/01/09/110757
+<https://fls.hatenablog.com/entry/2023/01/09/110757>
