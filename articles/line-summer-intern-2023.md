@@ -7,6 +7,7 @@ topics:
   - "参加記"
 published: true
 published_at: 2023-09-26 20:30
+publication_name: "trap"
 ---
 
 ## これは何？
