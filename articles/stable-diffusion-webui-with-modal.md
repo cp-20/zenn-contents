@@ -296,29 +296,29 @@ model_ids = [
 | --------- | ---- |
 | `image` | コンテナイメージの指定。コンテナは一度作成すると使いまわせるのでここで必要なものを事前に全て入れておいて起動時間の短縮を図っている |
 | `secret` | ModalのSecretをここで環境変数に読み込んでいる |
-| `shared_volumes` | `{<remote_path>: SharedVolume}`のように指定することで、リモート側のパスの一部を永続化(次回起動時にも保存されるように)している |
+| `network_file_systems` | `{<remote_path>: NetworkFileSystem}`のように指定することで、リモート側のパスの一部を永続化(次回起動時にも保存されるように)している |
 | `gpu` | これを指定することでこの関数内でGPUを使えるようになる |
 | `timeout` | 関数の連続実行時間の上限。適当に100分にしているので100分経つとWebUIが落ちる |
 
 ```py
 @stub.function(
-    image=modal.Image.from_dockerhub("python:3.8-slim")...,
+    image=modal.Image.from_registry("python:3.8-slim")...,
     secret=modal.Secret.from_name("my-huggingface-secret"),
-    shared_volumes={webui_dir: volume_main},
+    network_file_systems={webui_dir: volume_main},
     gpu="a10g",
     timeout=6000,
 )
 ```
 
-ちなみに`SharedVolume`の初期化は次のようにやります。`"unique_key"`が同じなら他のプログラムからでも同じ`SharedVolume`にアクセスできます。
+ちなみに`NetworkFileSystem`の初期化は次のようにやります。`"unique_key"`が同じなら他のプログラムからでも同じ`NetworkFileSystem`にアクセスできます。
 
 ```py
-volume_main = modal.SharedVolume().persist("unique_key")
+volume_main = modal.NetworkFileSystem.persisted("unique_key")
 ```
 
 #### セットアップ
 
-まずStable Diffusion WebUIをGitHubからクローンしてきます。`SharedVolume`内に既にある場合はスキップします。
+まずStable Diffusion WebUIをGitHubからクローンしてきます。`NetworkFileSystem`内に既にある場合はスキップします。
 
 (AUTOMATIC1111氏のリポジトリから直接クローンしないのはバージョンに依らず動作を安定させるためです。)
 
@@ -328,7 +328,7 @@ if not webui_dir_path.exists():
     subprocess.run(f"git clone -b v2.0 https://github.com/camenduru/stable-diffusion-webui {webui_dir}", shell=True)
 ```
 
-次にモデルをダウンロードしてきます。`SharedVolume`内に既にある場合はスキップします。
+次にモデルをダウンロードしてきます。`NetworkFileSystem`内に既にある場合はスキップします。
 
 ```py
 for model_id in model_ids:
@@ -357,7 +357,7 @@ for model_id in model_ids:
     print(Fore.GREEN + model_id["repo_id"] + "のセットアップが完了しました！")
 ```
 
-モデルや本体を`SharedVolume`に全部入れることと、事前にコンテナ内でセットアップを終えておくことでWebUI起動までの時間を極限まで短縮しています。
+モデルや本体を`NetworkFileSystem`に全部入れることと、事前にコンテナ内でセットアップを終えておくことでWebUI起動までの時間を極限まで短縮しています。
 
 #### WebUI起動
 
@@ -397,7 +397,7 @@ modal run stable-diffusion-webui.py
 
 WebUIの使い方に関しては他の人が素晴らしい記事をたくさん書いてくれてると思うのでそちらを参考にして頂ければと思います。
 
-<https://intindex.stars.ne.jp/archives/12180>
+https://intindex.stars.ne.jp/archives/12180
 
 ### 5. オマケ: 生成した画像を一括でダウンロードする
 
@@ -424,7 +424,7 @@ output_dir = "./outputs"
 
 
 @stub.function(
-    shared_volumes={webui_dir: volume},
+    network_file_systems={webui_dir: volume},
 )
 def list_output_image_path(cache: list[str]):
   absolute_remote_outputs_dir = os.path.join(webui_dir, remote_outputs_dir)
