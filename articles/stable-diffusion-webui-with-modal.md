@@ -72,12 +72,8 @@ modal token new
 次のプログラムを`get_started.py`として保存してください。
 
 ```py
-import modal
-
-stub = modal.Stub("example-get-started")
-
 # リモート側で動く関数
-@stub.function
+@stub.function()
 def square(x):
     print("This code is running on a remote worker!")
     return x**2
@@ -420,7 +416,7 @@ from concurrent import futures
 stub = modal.Stub("stable-diffusion-webui-download-output")
 
 volume_key = 'stable-diffusion-webui-main'
-volume = modal.SharedVolume().persist(volume_key)
+volume = modal.NetworkFileSystem.persisted(volume_key)
 
 webui_dir = "/content/stable-diffusion-webui/"
 remote_outputs_dir = 'outputs'
@@ -447,7 +443,7 @@ def list_output_image_path(cache: list[str]):
 def download_image_using_modal(image_path: str):
   download_dest = os.path.dirname(os.path.join(output_dir, image_path))
   os.makedirs(download_dest, exist_ok=True)
-  subprocess.run(f'modal volume get {volume_key} {os.path.join(remote_outputs_dir, image_path)} {download_dest}', shell=True)
+  subprocess.run(f'modal nfs get {volume_key} {os.path.join(remote_outputs_dir, image_path)} {download_dest}', shell=True)
 
 @stub.local_entrypoint()
 def main():
@@ -495,8 +491,8 @@ Modalの方が2倍ぐらい早いので使う価値はあるかなという感�
 > なのでWebUIを合法的に使うならModalの方が良いかも (Modalは公式に[SDを動かすサンプル](https://modal.com/docs/guide/ex/stable_diffusion_cli)があるぐらいに推してる)
 > ついでに[LLMs使ったボイスチャット](https://modal.com/docs/guide/llm-voice-chat)とか、[LangChain動かすサンプル](https://modal.com/docs/guide/ex/potus_speech_qanda)とか、[Whisper使ったPodcastの翻訳](https://modal.com/docs/guide/whisper-transcriber)とか[Dreamboothのサンプル](https://modal.com/docs/guide/ex/dreambooth_app)とか、[ControlNet使うサンプル](https://modal.com/docs/guide/ex/controlnet_gradio_demos)とか色々あるみたいなのでAIを使ってみたい人的には結構良いかも (ただし全部英語でかかれてるし、使いこなすにはある程度の能力がいりそう)
 
-<https://twitter.com/ddPn08/status/1649264165473878018?s=20>
+https://twitter.com/ddPn08/status/1649264165473878018?s=20
 
 ## 参考にした記事
 
-<https://fls.hatenablog.com/entry/2023/01/09/110757>
+https://fls.hatenablog.com/entry/2023/01/09/110757
