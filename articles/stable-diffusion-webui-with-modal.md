@@ -81,8 +81,8 @@ def square(x):
 # プログラムのローカル側のエントリポイント(プログラムの中で最初に呼び出されるところ)
 @stub.local_entrypoint()
 def main():
-    # Modalの関数は`<function_name>.call`で呼び出す必要がある
-    print("the square is", square.call(42))
+    # Modalの関数は`<function_name>.remote`で呼び出す必要がある
+    print("the square is", square.remote(42))
 ```
 
 保存出来たら次のコマンドでプログラムを動かしてみましょう。
@@ -260,7 +260,7 @@ async def run_stable_diffusion_webui():
 
 @stub.local_entrypoint()
 def main():
-    run_stable_diffusion_webui.call()
+    run_stable_diffusion_webui.remote()
 ```
 
 プログラムの解説は長いのでアコーディオンにしておきます。気になる人はどうぞ。
@@ -454,7 +454,7 @@ def main():
       relativeFilePath = os.path.join(root, file)[len(output_dir) :]
       cache.append(relativeFilePath)
 
-  image_path_list = list_output_image_path.call(cache)
+  image_path_list = list_output_image_path.remote(cache)
 
   print(f'\n{len(image_path_list)}ファイルのダウンロードを行います\n')
 
