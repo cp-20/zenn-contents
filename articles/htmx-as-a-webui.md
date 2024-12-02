@@ -4,7 +4,7 @@ emoji: "📨"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["javascript", "html", "htmx"]
 published: true
-published_at: 2023-12-02 21:30
+published_at: 2024-12-02 21:30
 ---
 
 この記事は [SecHack365 Advent Calendar 2024](https://qiita.com/advent-calendar/2024/sechack365) 2日目の記事です。先に断っておくと SecHack365 要素は1ミリもありません、ごめんなさい。
