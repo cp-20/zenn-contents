@@ -47,6 +47,8 @@ EvalError: Code generation from strings disallowed for this context
          "require": "./dist/index.cjs.js",
 ```
 
+これはどの場合でもブラウザ用のパッケージを使わせる設定ですが、テストなどの Node.js 環境でも `firebase/firestore` を使っている場合は、その場合だけ Node.js 用のパッケージを使わせるなどの工夫が必要になります。
+
 このような monkey patch を当てたくない場合は、`firebase/firestore` パッケージを import するコンポーネントを全て `dynamic()` を使ってクライアントでしか実行されないようにするか、うまく `@firebase/firestore` パッケージをクライアントでしかロードしないようにするなどの工夫が必要になります。
 
 ## 根本原因の解説
